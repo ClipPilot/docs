@@ -1,97 +1,57 @@
 ---
 title: "Introduction"
-description: "Welcome to the new home for your documentation"
+description: "Programmatic access to Cuttr's AI video clipping and processing tools"
 ---
 
-## Setting up
+## Welcome to the Cuttr API
 
-Get your documentation site up and running in minutes.
+The Cuttr API gives you programmatic access to AI-powered video clipping, face swapping, and more. Build integrations that process video content at scale with simple REST endpoints and a prepaid wallet model.
 
 <Card
-  title="Start here"
-  icon="rocket"
+  title="Quickstart"
+  icon="bolt"
   href="/quickstart"
   horizontal
 >
-  Follow our three step quickstart guide.
+  Get your API key, fund your wallet, and make your first request in under 2 minutes.
 </Card>
 
-## Make it yours
+## How it works
 
-Design a docs site that looks great and empowers your users.
+<Steps>
+  <Step title="Get your API key">
+    Create an API key from the [dashboard](https://platform.cuttr.com/dashboard/api-platform). Keys are shown once — store them securely.
+  </Step>
+  <Step title="Fund your wallet">
+    Add funds to your wallet. Every API call deducts from your balance. Set up auto-refill so you never run out.
+  </Step>
+  <Step title="Make requests">
+    Pass your key in the `X-API-Key` header. Each product has a fixed per-unit cost — no surprises.
+  </Step>
+</Steps>
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+## Products & Pricing
 
-## Create beautiful pages
+| Product | Slug | Price | Unit |
+|---------|------|-------|------|
+| AI Clipping | `clip_save` | $0.50 | per clip |
+| Face Swap | `face_swap` | $0.25 | per second |
 
-Everything you need to create world-class documentation.
+<Note>More products coming soon — ad cloning, AI UGC, and more.</Note>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Explore
 
-## Need inspiration?
-
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Learn how API key auth works and how to keep keys safe.
+  </Card>
+  <Card title="Wallet & Billing" icon="wallet" href="/concepts/wallet">
+    Understand the prepaid wallet model, top-ups, and auto-refill.
+  </Card>
+  <Card title="Rate Limits" icon="gauge" href="/concepts/rate-limits">
+    Default limits and how to handle 429 responses.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference/introduction">
+    Full endpoint documentation with try-it playground.
+  </Card>
+</CardGroup>
