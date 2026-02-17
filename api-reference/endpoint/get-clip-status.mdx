@@ -1,0 +1,73 @@
+---
+title: "Get Clip Status"
+api: "GET https://api.cuttr.com/api/platform/v1/clip/{clipId}"
+description: "Poll a clip's processing status and download when ready"
+---
+
+Check the status of a clip created via [Create Clip](/api-reference/endpoint/create-clip). When `status` is `"completed"`, the response includes a presigned `download_url` valid for 1 hour.
+
+### Headers
+
+<ParamField header="X-API-Key" type="string" required>
+  Your API key.
+</ParamField>
+
+### Path parameters
+
+<ParamField path="clipId" type="integer" required>
+  The clip ID returned from the create endpoint.
+</ParamField>
+
+### Response
+
+<ResponseField name="clip_id" type="integer">
+  The clip ID.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  One of `processing`, `completed`, or `failed`.
+</ResponseField>
+
+<ResponseField name="title" type="string">
+  AI-generated clip title (only when completed).
+</ResponseField>
+
+<ResponseField name="download_url" type="string">
+  Presigned S3 URL to download the clip (expires in 1 hour). Only present when completed.
+</ResponseField>
+
+<ResponseField name="metadata" type="object">
+  Clip metadata including AI suggestions and parameters (only when completed).
+</ResponseField>
+
+<ResponseField name="error" type="string">
+  Error message (only when failed).
+</ResponseField>
+
+<ResponseExample>
+```json Processing
+{
+  "clip_id": 1234,
+  "status": "processing"
+}
+```
+
+```json Completed
+{
+  "clip_id": 1234,
+  "status": "completed",
+  "title": "The Secret to Scaling Your SaaS",
+  "download_url": "https://s3.amazonaws.com/...",
+  "metadata": { ... },
+  "created_at": "2026-02-16T12:00:00.000Z"
+}
+```
+
+```json Failed
+{
+  "clip_id": 1234,
+  "status": "failed",
+  "error": "Processing failed"
+}
+```
+</ResponseExample>

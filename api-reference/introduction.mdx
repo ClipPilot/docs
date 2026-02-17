@@ -35,4 +35,8 @@ Each endpoint page includes a **playground** where you can make live requests. E
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `GET` | [`/v1/test`](/api-reference/endpoint/test) | Verify your API key works |
-| `GET` | [`/teams/{teamId}/wallet`](/api-reference/endpoint/get-wallet) | Get wallet balance |
+| `POST` | [`/v1/clip`](/api-reference/endpoint/create-clip) | Submit a video for AI clipping |
+| `GET` | [`/v1/clip/{clipId}`](/api-reference/endpoint/get-clip-status) | Poll clip status & download |
+| `GET` | [`/v1/wallet`](/api-reference/endpoint/get-wallet) | Get wallet balance |
+| `POST` | [`/v1/wallet/topup`](/api-reference/endpoint/create-topup) | Create a wallet top-up |
+| `GET` | [`/v1/wallet/topup/{id}/status`](/api-reference/endpoint/get-topup-status) | Check top-up status |
