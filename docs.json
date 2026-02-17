@@ -40,9 +40,7 @@
               "api-reference/endpoint/test",
               "api-reference/endpoint/create-clip",
               "api-reference/endpoint/get-clip-status",
-              "api-reference/endpoint/get-wallet",
-              "api-reference/endpoint/create-topup",
-              "api-reference/endpoint/get-topup-status"
+              "api-reference/endpoint/get-wallet"
             ]
           }
         ]
