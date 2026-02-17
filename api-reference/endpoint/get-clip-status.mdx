@@ -1,10 +1,10 @@
 ---
-title: "Get Clip Status"
-api: "GET https://api.cuttr.com/api/platform/v1/clip/{clipId}"
-description: "Poll a clip's processing status and download when ready"
+title: "Get Job Status"
+api: "GET https://api.cuttr.com/api/platform/v1/clip/{jobId}"
+description: "Poll a clip job for progress and download links"
 ---
 
-Check the status of a clip created via [Create Clip](/api-reference/endpoint/create-clip). When `status` is `"completed"`, the response includes a presigned `download_url` valid for 1 hour.
+Check the status of a clip job. When all clips are finished, the response includes permanent download URLs for each clip.
 
 ### Headers
 
@@ -14,60 +14,115 @@ Check the status of a clip created via [Create Clip](/api-reference/endpoint/cre
 
 ### Path parameters
 
-<ParamField path="clipId" type="integer" required>
-  The clip ID returned from the create endpoint.
+<ParamField path="jobId" type="integer" required>
+  The `job_id` returned from [Create Clip](/api-reference/endpoint/create-clip).
 </ParamField>
 
 ### Response
 
-<ResponseField name="clip_id" type="integer">
-  The clip ID.
+When the job is still processing:
+
+<ResponseField name="job_id" type="integer">
+  The job identifier.
 </ResponseField>
 
 <ResponseField name="status" type="string">
-  One of `processing`, `completed`, or `failed`.
+  `"processing"` while clips are being generated.
 </ResponseField>
 
-<ResponseField name="title" type="string">
-  AI-generated clip title (only when completed).
+<ResponseField name="progress" type="object">
+  Progress information.
+  <Expandable title="properties">
+    <ResponseField name="progress.completed" type="integer">
+      Number of clips finished so far.
+    </ResponseField>
+    <ResponseField name="progress.total" type="integer">
+      Total number of clips in the job.
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
-<ResponseField name="download_url" type="string">
-  Presigned S3 URL to download the clip (expires in 1 hour). Only present when completed.
+When all clips are finished:
+
+<ResponseField name="job_id" type="integer">
+  The job identifier.
 </ResponseField>
 
-<ResponseField name="metadata" type="object">
-  Clip metadata including AI suggestions and parameters (only when completed).
+<ResponseField name="status" type="string">
+  `"completed"` when all clips are done.
 </ResponseField>
 
-<ResponseField name="error" type="string">
-  Error message (only when failed).
+<ResponseField name="clips" type="object[]">
+  Array of clip results.
+  <Expandable title="properties">
+    <ResponseField name="clips[].clip_id" type="integer">
+      Individual clip identifier.
+    </ResponseField>
+    <ResponseField name="clips[].status" type="string">
+      `"completed"` or `"failed"`.
+    </ResponseField>
+    <ResponseField name="clips[].title" type="string">
+      AI-generated clip title (when completed).
+    </ResponseField>
+    <ResponseField name="clips[].download_url" type="string">
+      Permanent download URL (when completed). These URLs do not expire.
+    </ResponseField>
+    <ResponseField name="clips[].error" type="string">
+      Error message (when failed).
+    </ResponseField>
+    <ResponseField name="clips[].created_at" type="string">
+      ISO 8601 timestamp.
+    </ResponseField>
+  </Expandable>
 </ResponseField>
 
 <ResponseExample>
 ```json Processing
 {
-  "clip_id": 1234,
-  "status": "processing"
+  "job_id": 42,
+  "status": "processing",
+  "progress": {
+    "completed": 1,
+    "total": 3
+  }
 }
 ```
 
 ```json Completed
 {
-  "clip_id": 1234,
+  "job_id": 42,
   "status": "completed",
-  "title": "The Secret to Scaling Your SaaS",
-  "download_url": "https://s3.amazonaws.com/...",
-  "metadata": { ... },
-  "created_at": "2026-02-16T12:00:00.000Z"
+  "clips": [
+    {
+      "clip_id": 1234,
+      "status": "completed",
+      "title": "The Best Moment",
+      "download_url": "https://clipster-videos-prod.s3.us-west-2.amazonaws.com/generated-clips/...",
+      "created_at": "2026-02-16T12:00:00.000Z"
+    },
+    {
+      "clip_id": 1235,
+      "status": "completed",
+      "title": "Key Insight",
+      "download_url": "https://clipster-videos-prod.s3.us-west-2.amazonaws.com/generated-clips/...",
+      "created_at": "2026-02-16T12:00:00.000Z"
+    }
+  ]
 }
 ```
 
 ```json Failed
 {
-  "clip_id": 1234,
-  "status": "failed",
-  "error": "Processing failed"
+  "job_id": 42,
+  "status": "completed",
+  "clips": [
+    {
+      "clip_id": 1236,
+      "status": "failed",
+      "error": "Failed to process video",
+      "created_at": "2026-02-16T12:00:00.000Z"
+    }
+  ]
 }
 ```
 </ResponseExample>

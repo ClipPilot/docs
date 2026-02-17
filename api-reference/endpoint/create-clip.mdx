@@ -6,7 +6,11 @@ description: "Submit a video for AI clipping"
 
 Submit a video to generate AI-powered short-form clips. You can provide either a **public URL** or **upload the file directly**.
 
-Each clip costs **$1.50** and is deducted from your wallet upfront. The response returns `clip_ids` that you can poll with [Get Clip Status](/api-reference/endpoint/get-clip-status).
+Each clip costs **$1.50** and is deducted from your wallet upfront. The response returns a `job_id` that you can poll with [Get Job Status](/api-reference/endpoint/get-clip-status).
+
+<Note>
+  **Both modes respond immediately.** Whether you provide a URL or upload a file, the response comes back right away while the video is processed in the background. Use the returned `job_id` to poll for status.
+</Note>
 
 ## Option 1: JSON with video URL
 
@@ -17,7 +21,8 @@ curl -X POST https://api.cuttr.com/api/platform/v1/clip \
   -d '{
     "video_url": "https://example.com/video.mp4",
     "num_clips": 3,
-    "style": "viral"
+    "style": "viral",
+    "captions": { "enabled": true, "color": "yellow" }
   }'
 ```
 
@@ -30,7 +35,7 @@ curl -X POST https://api.cuttr.com/api/platform/v1/clip \
   -F "num_clips=3" \
   -F "style=viral" \
   -F "captions_enabled=true" \
-  -F "captions_color=#FFFF00"
+  -F "captions_color=yellow"
 ```
 
 ### Headers
@@ -59,8 +64,8 @@ curl -X POST https://api.cuttr.com/api/platform/v1/clip \
     <ParamField body="captions.enabled" type="boolean" default="false">
       Whether to burn captions into the clip.
     </ParamField>
-    <ParamField body="captions.color" type="string" default="#FFFFFF">
-      Hex color code for caption text.
+    <ParamField body="captions.color" type="string" default="white">
+      Caption text color. One of `white`, `black`, `red`, `orange`, `yellow`, `green`, `teal`, `blue`, `purple`, `pink`.
     </ParamField>
   </Expandable>
 </ParamField>
@@ -83,14 +88,14 @@ curl -X POST https://api.cuttr.com/api/platform/v1/clip \
   `"true"` or `"false"` — whether to burn captions.
 </ParamField>
 
-<ParamField body="captions_color" type="string" default="#FFFFFF">
-  Hex color code for caption text.
+<ParamField body="captions_color" type="string" default="white">
+  Caption text color. One of `white`, `black`, `red`, `orange`, `yellow`, `green`, `teal`, `blue`, `purple`, `pink`.
 </ParamField>
 
 ### Response
 
-<ResponseField name="clip_ids" type="integer[]">
-  Array of clip IDs to poll for results.
+<ResponseField name="job_id" type="integer">
+  Job ID to poll for results via [Get Job Status](/api-reference/endpoint/get-clip-status).
 </ResponseField>
 
 <ResponseField name="num_clips" type="integer">
@@ -108,7 +113,7 @@ curl -X POST https://api.cuttr.com/api/platform/v1/clip \
 <ResponseExample>
 ```json 200
 {
-  "clip_ids": [1234, 1235, 1236],
+  "job_id": 42,
   "num_clips": 3,
   "cost_cents": 450,
   "status": "processing"
